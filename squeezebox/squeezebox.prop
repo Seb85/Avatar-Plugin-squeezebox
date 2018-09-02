@@ -1,0 +1,29 @@
+{
+  "modules" : { 
+    "squeezebox" : {
+		"description": "Commander son systeme Logitech Squeeze Box",
+		"version": "1.0",
+		"html" : "/status.html?",
+		"addrSqueezebox" : "http://IPSERVER:9000",
+		"clients":{
+			"Séjour":{
+				"play":"p0=play&p1=1&player=MAC",	
+				"pause":"p0=pause&p1=1&player=MAC"
+			},
+			"Salle de bain":{
+				"play":"p0=play&p1=1&player=MAC",	
+				"pause":"p0=pause&p1=1&player=MAC"
+			},
+			"Chambre":{
+				"play":"p0=play&p1=1&player=MAC",	
+				"pause":"p0=pause&p1=1&player=MAC"
+			}
+		},
+		"intentRules" : ["rules"],
+		"rules" : {
+			"play" 	: ["play * squeezebox"],
+			"pause" 	: ["pause * squeezebox"]
+		}
+    }
+  }
+}
