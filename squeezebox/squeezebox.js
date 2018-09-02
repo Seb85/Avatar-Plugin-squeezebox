@@ -23,8 +23,8 @@ exports.action = function(data, callback){
 	}
 	
 	var tblCommand = {
-		mute : function() { requestSqueezeBoxMute(data.client, 'p0=pause&p1=1&player=MAC')},
-		mutebis : function() { requestSqueezeBoxMute(data.client, 'p0=play&p1=1&player=MAC')},
+		mute : function() { requestSqueezeBoxMute(data.client, 'p0=mixer&p1=volume&p2=0&player=MAC')},
+		mutebis : function() { requestSqueezeBoxMute(data.client, 'p0=mixer&p1=volume&p2=100&player=MAC')},
 		play : function(){requestSqueezeBoxCmd(data.client, Config.modules.squeezebox.clients[room][data.action.value], "C'est en cours.|Comme si c'était fait.|magique.")},
 		pause : function(){requestSqueezeBoxCmd(data.client, Config.modules.squeezebox.clients[room][data.action.value], "OK.")},
 		stop : function(){requestSqueezeBoxCmd(data.client, Config.modules.squeezebox.clients[room][data.action.value], "Bien monsieur.")}
