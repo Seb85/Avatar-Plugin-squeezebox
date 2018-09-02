@@ -58,8 +58,7 @@ function requestSqueezeBoxMute (client, value, txt) {
 	info('uri:', uri.yellow);
 	
 	request({
-		url: uri,
-		method: 'POST'
+		url: uri
 	},
 	function(state) {
 		if (txt) {
@@ -74,6 +73,7 @@ function requestSqueezeBoxMute (client, value, txt) {
 	function (err, response) {
 		if (err || response.statusCode != 200) {
 			info('Error: Callback request'.red);
+			Avatar.Speech.end(client);
 			return callback(false);
 		}
 	   
@@ -89,8 +89,7 @@ function requestSqueezeBoxCmd (client, value, txt) {
 	info('uri:', uri.yellow);
 	
 	request({
-		url: uri,
-		method: 'POST'
+		url: uri
 	},
 	function(state) {
 		if (txt) {
@@ -106,6 +105,7 @@ function requestSqueezeBoxCmd (client, value, txt) {
 	function (err, response) {
 		if (err || response.statusCode != 200) {
 			info('Error: Callback request'.red);
+			Avatar.Speech.end(client);
 			return callback(false);
 		}
 	   
