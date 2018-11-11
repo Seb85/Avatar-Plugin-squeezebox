@@ -3,6 +3,7 @@
     "squeezebox" : {
 		"description": "Commander son systeme Logitech Squeeze Box",
 		"version": "1.0",
+		"active" : true,
 		"html" : "/status.html?",
 		"addrSqueezebox" : "http://IPSERVER:9000",
 		"clients":{
