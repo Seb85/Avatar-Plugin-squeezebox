@@ -15,8 +15,12 @@ Commander son systeme Logitech Squeeze Box
 ## Configuration
 La configuration du plugin se fait dans le fichier `Avatar-Serveur/plugins/squeezebox/squeezebox.prop` et `Avatar-Serveur/plugins/squeezebox/squeezebox.js`
 
-jeedom.prop :
+squeezebox.prop :
 Inscrire l'adresse IP de votre serveur squeezebox.
+L'adresse mac de vos player en fonction des piéces.
+
+squeezebox.js :
+Des modifications a apportées sur le nom des playlists.
    
 ## Versions
 
