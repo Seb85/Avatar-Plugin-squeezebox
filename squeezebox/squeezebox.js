@@ -113,7 +113,6 @@ function requestSqueezeBoxDeezer(data, client, value) {
 				Avatar.speak("C'est parti.", data.client, function () {
                 });
 				var url = _SqueezeboxConf.ip + _SqueezeboxConf.SqueezeboxHtml + 'p0=playlist&p1=play&p2=deezer%3A%2F%2Fflow.dzr&p3=Deezer%20Flow&' + value;
-
 				http_request(url)
 				end(data.client, true);
 				return;
@@ -342,7 +341,7 @@ function scraperartiste(body) {
 		index = index.split('<div class="browseItemDetail">')[1];
 		index = index.split('<a href="index.html?')[1];
 		index = index.split('.0&')[0];
-		index = index + '.1';
+		index = index + '.0.1';
 		if (!index) {
 			Avatar.speak("Désolé je n'ai pas trouvé.", data.client, function(){
 			});
