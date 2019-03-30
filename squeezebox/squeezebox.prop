@@ -1,33 +1,43 @@
 {
   "modules" : { 
     "squeezebox" : {
-		"description": "Commander son systeme Logitech Squeeze Box",
+		"description": "Commander son systeme Logitech SqueezeBox",
 		"version": "1.0",
 		"active" : true,
-		"html" : "/status.html?",
+		"html" : "/anyurl?",
 		"addrSqueezebox" : "http://IPSERVER:9000",
 		"clients":{
 			"Séjour":{
-				"play":"p0=play&p1=1&player=MAC",	
-				"pause":"p0=pause&p1=1&player=MAC",
-				"stop":"p0=stop&p1=1&player=MAC"
-			},
-			"Salle de bain":{
-				"play":"p0=play&p1=1&player=MAC",	
-				"pause":"p0=pause&p1=1&player=MAC",
-				"stop":"p0=stop&p1=1&player=MAC"
+				"play":"p0=play&p1=1&player=MACSqueezeSéjour",	
+				"pause":"p0=pause&p1=1&player=MACSqueezeSéjour",
+				"stop":"p0=stop&p1=1&player=MACSqueezeSéjour",
+				"suivant":"p0=playlist&p1=jump&p2=%2b1&player=MACSqueezeSéjour",
+				"precedent":"p0=playlist&p1=jump&p2=-1&player=MACSqueezeSéjour",
+				"sondown":"p0=mixer&p1=volume&p2=-20&player=MACSqueezeSéjour",
+				"sonup":"p0=mixer&p1=volume&p2=%2b20&player=MACSqueezeSéjour",
+				"deezer":"player=MACSqueezeSéjour"
 			},
 			"Chambre":{
-				"play":"p0=play&p1=1&player=MAC",	
-				"pause":"p0=pause&p1=1&player=MAC",
-				"stop":"p0=stop&p1=1&player=MAC"
+				"play":"p0=play&p1=1&player=MACSqueezeChambre",	
+				"pause":"p0=pause&p1=1&player=MACSqueezeChambre",
+				"stop":"p0=stop&p1=1&player=MACSqueezeChambre",
+				"suivant":"p0=playlist&p1=jump&p2=%2b1&player=MACSqueezeChambre",
+				"precedent":"p0=playlist&p1=jump&p2=-1&player=MACSqueezeChambre",
+				"sondown":"p0=mixer&p1=volume&p2=-20&player=MACSqueezeChambre",
+				"sonup":"p0=mixer&p1=volume&p2=%2b20&player=MACSqueezeChambre",
+				"deezer":"player=MACSqueezeChambre"
 			}
 		},
 		"intentRules" : ["rules"],
 		"rules" : {
-			"play" 	: ["start * music","put * music"],
-			"pause" 	: ["pause * squeezebox"],
-			"stop" 	: ["stop * squeezebox"],
+			"play" 	: ["music back"],
+			"pause" 	: ["pause * music"],
+			"stop" 	: ["stop * music"],
+			"suivant" 	: ["next music"],
+			"precedent" 	: ["previous music"],
+			"sondown" 	: ["drop the sound of music"],
+			"sonup" 	: ["mount the sound of music"],
+			"deezer" 	: ["10am","deezer","start * music","put * music"]
 		}
     }
   }
