@@ -112,20 +112,9 @@ function requestSqueezeBoxDeezer(data, client, value) {
 			  if (answer.indexOf('flow') != -1) {
 				Avatar.speak("C'est parti.", data.client, function () {
                 });
-				var uri = _SqueezeboxConf.ip + _SqueezeboxConf.SqueezeboxHtml + 'p0=playlist&p1=play&p2=deezer%3A%2F%2Fflow.dzr&p3=Deezer%20Flow&' + value;
-	
-				info('uri:', uri.yellow);
-	
-				request({
-					url: uri
-				},
-				function (err, response) {
-					if (err || response.statusCode != 200) {
-						info('Error: Callback request'.red);
-						return callback(false);
-					}
-	   
-				});
+				var url = _SqueezeboxConf.ip + _SqueezeboxConf.SqueezeboxHtml + 'p0=playlist&p1=play&p2=deezer%3A%2F%2Fflow.dzr&p3=Deezer%20Flow&' + value;
+
+				http_request(url)
 				end(data.client, true);
 				return;
               }
