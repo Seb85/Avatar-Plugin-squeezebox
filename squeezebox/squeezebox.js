@@ -54,31 +54,12 @@ var setClient = function (data) {
 	return client;
 }
 
-function requestSqueezeBoxCmd (client, value, txt, end) {
-	
-	
+function requestSqueezeBoxCmd (client, value, txt) {
 	var url = _SqueezeboxConf.ip + _SqueezeboxConf.SqueezeboxHtml + value;
-	info(url)
 	http_request(url),
-	function(state) {
-		if (txt) {
-			Avatar.speak(txt, client, function() {
+	Avatar.speak(txt, client, function() {
 				Avatar.Speech.end(client);
-			});
-			} else {
-			var answer = !state;
-			Avatar.Speech.end(client);
-		}
-		},
-	function (err, response) {
-		if (err || response.statusCode != 200) {
-			info('Error: Callback request'.red);
-			return callback(false);
-		}
-	   
-	};
-	end(data.client, true);
-	
+	});;
 }
 
 function requestSqueezeBoxDeezer(data, client, value) {
@@ -169,6 +150,7 @@ function deezerartiste(data, client, value) {
 					.then(body => scraperartiste(body))
 					.then(function(index) { 
 					var url = _SqueezeboxConf.ip + '/plugins/deezer/index.html?' + value + '&' + index + '&sess='
+					info(url)
 					http_request(url)
 					.then(body => scraperall(body, value))
 					})
@@ -342,7 +324,7 @@ function scraperartiste(body) {
 		index = index.split('<div class="browseItemDetail">')[1];
 		index = index.split('<a href="index.html?')[1];
 		index = index.split('.0&')[0];
-		index = index + '.0.1';
+		index = index + '.1';
 		if (!index) {
 			Avatar.speak("Désolé je n'ai pas trouvé.", data.client, function(){
 			});
