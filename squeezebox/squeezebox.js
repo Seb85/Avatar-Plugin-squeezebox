@@ -54,7 +54,7 @@ var setClient = function (data) {
 	return client;
 }
 
-function requestSqueezeBoxCmd (client, value, txt) {
+function requestSqueezeBoxCmd (client, value, txt, end) {
 	
 	
 	var url = _SqueezeboxConf.ip + _SqueezeboxConf.SqueezeboxHtml + value;
