@@ -77,6 +77,7 @@ function requestSqueezeBoxCmd (client, value, txt) {
 		}
 	   
 	};
+	end(data.client, true);
 	
 }
 
