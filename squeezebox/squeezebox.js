@@ -23,7 +23,7 @@ exports.action = function(data, callback){
 	}
 	
 	var tblCommand = {
-		play : function(){requestSqueezeBoxCmd(data.client, Config.modules.squeezebox.clients[room][data.action.value], "C'est en cours.|Comme si c'était fait.|magique.|Et C'est parti pour le show.")},
+		play : function(){requestSqueezeBoxCmd(data.client, Config.modules.squeezebox.clients[room][data.action.value], "Très bien.")},
 		pause : function(){requestSqueezeBoxCmd(data.client, Config.modules.squeezebox.clients[room][data.action.value], "OK.")},
 		stop : function(){requestSqueezeBoxCmd(data.client, Config.modules.squeezebox.clients[room][data.action.value], "Bien monsieur.")},
 		suivant : function(){requestSqueezeBoxCmd(data.client, Config.modules.squeezebox.clients[room][data.action.value], "Suivant.")},
