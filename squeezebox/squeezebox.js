@@ -387,6 +387,7 @@ function scraperplaylist(body, answer, value) {
 
 function scraperall(body, value) {
 	return new Promise(function (resolve, reject) {
+		//Merci Yann
 		var regex = /\/anyurl?.*', 1\)/g
 		var index = body.match(regex);
 		for(let a of index) 
