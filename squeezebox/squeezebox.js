@@ -324,7 +324,7 @@ function scraperartiste(body) {
 		index = index.split('<div class="browseItemDetail">')[1];
 		index = index.split('<a href="index.html?')[1];
 		index = index.split('.0&')[0];
-		index = index + '.1';
+		index = index + '.0.1';
 		if (!index) {
 			Avatar.speak("Désolé je n'ai pas trouvé.", data.client, function(){
 			});
