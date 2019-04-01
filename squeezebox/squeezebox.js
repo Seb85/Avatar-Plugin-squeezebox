@@ -320,14 +320,20 @@ function deezerplaylist(data, client, value) {
 
 function scraperartiste(body) {
 	return new Promise(function (resolve, reject) {
+		var search = /Pistes principales/i;
+		var resultat = search.test(body)
+		if (resultat == true) {
 		var index = body;
-		index = index.split('<div class="browseItemDetail">')[1];
-		index = index.split('<a href="index.html?')[1];
-		index = index.split('.0&')[0];
-		index = index + '.1';
-		if (!index) {
-			Avatar.speak("Désolé je n'ai pas trouvé.", data.client, function(){
-			});
+		index = index.split('istes principales')[0];
+		index = index.split(/html\?+/).pop();
+		index = index.split('&')[0];
+		}
+		else {
+			var index = body;
+			index = index.split('<div class="browseItemDetail">')[1];
+			index = index.split('<a href="index.html?')[1];
+			index = index.split('.0&')[0];
+			index = index + '.0.1';
 		}
 		resolve (index);
 	});
