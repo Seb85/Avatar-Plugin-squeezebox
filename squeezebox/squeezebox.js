@@ -101,7 +101,7 @@ function requestSqueezeBoxDeezer(data, client, value) {
               }
 
               return Avatar.speak("Je suis désolé, je n'ai pas compris.", data.client, function(){
-                  deezer(data, client)
+                  requestSqueezeBoxDeezer(data, client)
               });
           }
 
