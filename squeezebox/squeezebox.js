@@ -143,16 +143,14 @@ function deezerartiste(data, client, value) {
 					answer = answer.replace('jane','jain');
 					answer = answer.replace(answer[0], answer[0].toUpperCase());
 					info(answer)
-					Avatar.speak("C'est parti.", data.client, function () {
-					});
 					var url = _SqueezeboxConf.ip + '/plugins/deezer/index.html?' + value + '&sess=&index=0f41dc65.0.0&submit=Recherche&q=' + answer
 					http_request(url)
-					.then(body => scraperartiste(body))
+					.then(body => scraperartiste(data, client, body, value))
 					.then(function(index) { 
 					var url = _SqueezeboxConf.ip + '/plugins/deezer/index.html?' + value + '&' + index + '&sess='
 					info(url)
 					http_request(url)
-					.then(body => scraperall(body, value))
+					.then(body => scraperall(data, client, body, value))
 					})
 					end(data.client, true);
 					return;
@@ -196,15 +194,13 @@ function deezeralbum(data, client, value) {
 					answer = answer.replace('jane','jain');
 					answer = answer.replace(answer[0], answer[0].toUpperCase());
 					info(answer)
-					Avatar.speak("C'est parti.", data.client, function () {
-					});
 					var url = _SqueezeboxConf.ip + '/plugins/deezer/index.html?' + value + '&sess=&index=27df761e.0.1&submit=Recherche&q=' + answer
 					http_request(url)
-					.then(body => scraperalbum(body))
+					.then(body => scraperalbum(data, client, body, value))
 					.then(function(index) { 
 					var url = _SqueezeboxConf.ip + '/plugins/deezer/index.html?' + value + '&' + index + '&sess='
 					http_request(url)
-					.then(body => scraperall(body, value))
+					.then(body => scraperall(data, client, body, value))
 					})
 					end(data.client, true);
 					return;
@@ -248,11 +244,9 @@ function deezertitre(data, client, value) {
 					answer = answer.replace('jane','jain');
 					answer = answer.replace(answer[0], answer[0].toUpperCase());
 					info(answer)
-					Avatar.speak("C'est parti.", data.client, function () {
-					});
 					var url = _SqueezeboxConf.ip + '/plugins/deezer/index.html?' + value + '&sess=&index=a319d32b.0.2&submit=Recherche&q=' + answer
 					http_request(url)
-					.then(body => scrapertitre(body, value))
+					.then(body => scrapertitre(data, client, body, value))
 					end(data.client, true);
 					return;
 					}
@@ -269,7 +263,7 @@ function deezertitre(data, client, value) {
 }
 
 function deezerplaylist(data, client, value) {
-				Avatar.askme("Vous avez le choix entre ces playlist. Soirée, Sport ?", data.client,
+				Avatar.askme("Quel playlist voulez vous?", data.client,
 				{
 					"*": "generic",
                     "terminer": "done"
@@ -277,34 +271,13 @@ function deezerplaylist(data, client, value) {
 					if (answer && answer.indexOf('generic') != -1) {
 					end(data.client);
 					answer = answer.split(':')[1];
-
-					if (answer.indexOf('soirée') != -1) {
-						end(data.client);
-						info(answer)
-						Avatar.speak("C'est parti.", data.client, function () {
-						});
-						var url = _SqueezeboxConf.ip + '/plugins/deezer/index.html?' + value + '&sess=&index=a8fde8a9.3.0&sess='
-						http_request(url)
-						.then(body => scraperplaylist(body, answer, value))
-						end(data.client, true);
-						return;
-					}
-			  
-					if (answer.indexOf('sport') != -1) {
-						end(data.client);
-						info(answer)
-						Avatar.speak("C'est parti.", data.client, function () {
-						});
-						var url = _SqueezeboxConf.ip + '/plugins/deezer/index.html?' + value + '&sess=&index=a8fde8a9.3.0&sess='
-						http_request(url)
-						.then(body => scraperplaylist(body, answer, value))
-						end(data.client, true);
-						return;
-					}
-
-					return Avatar.speak("Je suis désolé, je n'ai pas compris.", data.client, function(){
-						deezerplaylist(data, client)
-					});
+					end(data.client);
+					info(answer)
+					var url = _SqueezeboxConf.ip + '/plugins/deezer/index.html?' + value + '&sess=&index=a8fde8a9.3.0&sess='
+					http_request(url)
+					.then(body => scraperplaylist(data, client, body, answer, value))
+					end(data.client, true);
+					return;
 				}
 
 				// Grammaire fixe
@@ -318,7 +291,7 @@ function deezerplaylist(data, client, value) {
 		})
 }
 
-function scraperartiste(body) {
+function scraperartiste(data, client, body, value) {
 	return new Promise(function (resolve, reject) {
 		var search = /Pistes principales/i;
 		var resultat = search.test(body)
@@ -329,71 +302,99 @@ function scraperartiste(body) {
 		index = index.split('&')[0];
 		}
 		else {
+			var search = /browseItemDetail/i;
+			var resultat = search.test(body)
+			if (resultat == true) {
+				var index = body;
+				index = index.split('<div class="browseItemDetail">')[1];
+				index = index.split('<a href="index.html?')[1];
+				index = index.split('.0&')[0];
+				index = index + '.0.1';
+			}
+			else {
+				return Avatar.speak("Désolé je n'ai pas trouvé l'artiste.", data.client, function(){
+				requestSqueezeBoxDeezer(data, client, value)
+				});
+			}
+		}
+		resolve (index);
+	});
+	
+}
+
+function scraperalbum(data, client, body, value) {
+	return new Promise(function (resolve, reject) {
+		var search = /browseItemDetail/i;
+		var resultat = search.test(body)
+			if (resultat == true) {
+				var index = body;
+				index = index.split('<div class="browseItemDetail">')[1];
+				index = index.split('<a href="index.html?')[1];
+				index = index.split('&')[0];
+			}
+			else {
+				return Avatar.speak("Désolé je n'ai pas trouvé l'album.", data.client, function(){
+				requestSqueezeBoxDeezer(data, client, value)
+				});
+			}
+		resolve (index);
+	});
+}
+
+function scrapertitre(data, client, body, value) {
+	return new Promise(function (resolve, reject) {
+		var search = /urlRequest/i;
+		var resultat = search.test(body)
+			if (resultat == true) {
+			Avatar.speak("C'est parti.", data.client, function () {
+			});
 			var index = body;
-			index = index.split('<div class="browseItemDetail">')[1];
-			index = index.split('<a href="index.html?')[1];
-			index = index.split('.0&')[0];
-			index = index + '.0.1';
-		}
-		resolve (index);
+			index = index.split('title="Lecture"/></a>')[1];
+			index = index.split('SqueezeJS.Controller.urlRequest(')[1];
+			index = index.split("'")[1];
+			index = index.split("'")[0];
+			if (!index) {
+				return Avatar.speak("Désolé je n'ai pas trouvé le titre.", data.client, function(){
+				deezertitre(data, client, value)
+				});
+			}
+			var url = _SqueezeboxConf.ip + index
+			http_request(url)
+			var url = _SqueezeboxConf.ip + _SqueezeboxConf.SqueezeboxHtml + 'p0=play&p1=1&' + value
+			http_request(url)
+			resolve (index);
+			}
+			else {
+				return Avatar.speak("Désolé je n'ai pas trouvé le titre.", data.client, function(){
+				requestSqueezeBoxDeezer(data, client, value)
+				});
+			}
 	});
 	
 }
 
-function scraperalbum(body) {
-	return new Promise(function (resolve, reject) {
-		var index = body;
-		index = index.split('<div class="browseItemDetail">')[1];
-		index = index.split('<a href="index.html?')[1];
-		index = index.split('&')[0];
-		
-		if (!index) {
-			Avatar.speak("Désolé je n'ai pas trouvé.", data.client, function(){
+function scraperplaylist(data, client, body, answer, value) {
+		var search = /answer/i;
+		var resultat = new RegExp(search);
+		if (resultat == false) {
+			return Avatar.speak("Désolé je n'ai pas trouvé la playlist.", data.client, function(){
+            deezerplaylist(data, client, value)
 			});
-		}
-		resolve (index);
-	});
-	
-}
-
-function scrapertitre(body, value) {
-	return new Promise(function (resolve, reject) {
-		var index = body;
-		index = index.split('title="Lecture"/></a>')[1];
-		index = index.split('SqueezeJS.Controller.urlRequest(')[1];
-		index = index.split("'")[1];
-		index = index.split("'")[0];
-		if (!index) {
-			Avatar.speak("Désolé je n'ai pas trouvé.", data.client, function(){
-			});
-		}
-		var url = _SqueezeboxConf.ip + index
-		http_request(url)
-		var url = _SqueezeboxConf.ip + _SqueezeboxConf.SqueezeboxHtml + 'p0=play&p1=1&' + value
-		http_request(url)
-		resolve (index);
-	});
-	
-}
-
-function scraperplaylist(body, answer, value) {
+		}	
 		var index = body;
 		var answer = answer.substring(1, answer.length0);
 		index = index.split(answer)[0];
 		var index = index.split(/html\?+/).pop();
 		index = index.split('&')[0];
-		if (!index) {
-			Avatar.speak("Désolé je n'ai pas trouvé.", data.client, function(){
-			});
-		}
 		var url = _SqueezeboxConf.ip + '/plugins/deezer/index.html?' + value + '&' + index + '&sess='
 		http_request(url)
-		.then(body => scraperall(body, value))
+		.then(body => scraperall(data, client, body, value))
 }
 
-function scraperall(body, value) {
+function scraperall(data, client, body, value) {
 	return new Promise(function (resolve, reject) {
-		//Merci Yann
+		Avatar.speak("C'est parti.", data.client, function () {
+			});
 		var regex = /\/anyurl?.*', 1\)/g
 		var index = body.match(regex);
 		for(let a of index) 
