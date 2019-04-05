@@ -430,14 +430,16 @@ function scraperplaylist(data, client, body, answer, value) {
 		var resultat = search.test(body)
 		if (resultat == true) {
 			var index = body;
-			var answer = answer.substring(1, answer.length0);
-			index = index.split(answer)[0];
-			var index = index.split(/html\?+/).pop();
+			index = index.split('affichage des albums')[1];
+			index = index.split(search)[0];
+			index = index.split(/html\?+/).pop();
 			index = index.split('&')[0];
+			
 			var url = _SqueezeboxConf.ip + '/plugins/deezer/index.html?' + value + '&' + index + '&sess='
+			info(url)
 			http_request(url)
 			.then(body => scraperall(data, client, body, value))
-		}	
+		}
 		else {
 			return Avatar.speak("Désolé je n'ai pas trouvé la playlist.", data.client, function(){
             deezerplaylist(data, client, value)
